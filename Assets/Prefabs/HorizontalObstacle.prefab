@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1735854100444962121}
   - component: {fileID: 7711459084706001330}
   - component: {fileID: 2059825034226497082}
-  - component: {fileID: 5157978300174772494}
   - component: {fileID: 5224018926731447667}
+  - component: {fileID: -3242164774919208902}
   - component: {fileID: 6667673544512954426}
   m_Layer: 0
   m_Name: HorizontalObstacle
@@ -89,7 +89,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5157978300174772494
+--- !u!65 &5224018926731447667
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,7 +110,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &5224018926731447667
+--- !u!65 &-3242164774919208902
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

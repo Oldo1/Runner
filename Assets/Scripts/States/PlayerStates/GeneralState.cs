@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.PlayerScripts;
+using UnityEngine;
 
-namespace Assets.Scripts.States
+namespace Assets.Scripts.States.PlayerState
 {
-    public class GeneralState : PlayerState
+    public class GeneralState : PlayerBaseState
     {
         private readonly Player _player;
 
-        public GeneralState(Player player, StateMachine stateMachine) : base(stateMachine)
+        public GeneralState(Player player, PlayerStateMachine stateMachine) : base(stateMachine)
         {
             _player = player;
         }
@@ -21,10 +22,10 @@ namespace Assets.Scripts.States
                     stateMachine.SwitchState<RightStrafeState>();
                 else if (Input.GetKeyDown(KeyCode.Space))
                     stateMachine.SwitchState<JumpState>();
-                else
+                else if (stateMachine.CurrentStateType != typeof(MoveState))
                     stateMachine.SwitchState<MoveState>();
             }
-            else if (!_player.IsOnGround && stateMachine.CurrentState != stateMachine.GetState<JumpState>() && stateMachine.CurrentState != stateMachine.GetState<FallState>())
+            else if (!_player.IsOnGround && !_player.IsGravityHandling)
                 stateMachine.SwitchState<FallState>();
         }
     }

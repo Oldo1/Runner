@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.States;
+﻿using Assets.Scripts.PlayerScripts;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
@@ -11,14 +11,15 @@ namespace Assets.Scripts
         [SerializeField] private PlayerMover _playerMover;
         [SerializeField] private JumpData _jumpData;
         [SerializeField] private CharacterController _characterController;
+        [SerializeField] private PlayerStateMachine _stateMachine;
 
-        private PlayerStrafe _playerStrafe;
-        private StateMachine _stateMachine;
+        private PlayerStrafeController _playerStrafe;
         private CancellationTokenSource _cancelationToken; 
         private PlayerGravityHandler _gravityHandler;
 
         public bool IsStrafing => _playerStrafe.IsStrafing;
         public bool IsOnGround => _characterController.isGrounded;
+        public bool IsGravityHandling => _gravityHandler.IsGravityHandling;
         public int LeftLineNumber => _playerStrafe.LeftLineNumber;
         public int RightLineNumber => _playerStrafe.RightLineNumber;
         public int CurrentLineNumber => _playerStrafe.CurrentLineNumber;
@@ -32,9 +33,9 @@ namespace Assets.Scripts
 
         public void Init()
         {
-            _playerStrafe = new PlayerStrafe(transform, _playerMover, _strafeSpeed);
+            _playerStrafe = new PlayerStrafeController(transform, _playerMover, _strafeSpeed);
             _gravityHandler = new PlayerGravityHandler(_playerMover, _jumpData.Gravity);
-            _stateMachine = new StateMachine(this);
+            _stateMachine.Init(this);
         }
 
         public void StrafeRight()
@@ -62,11 +63,6 @@ namespace Assets.Scripts
             Destroy(coin);
             Debug.Log("Coin collect");
             GameEvents.InvokeOnCollectCoinEvent(coin);
-        }
-
-        private void Update()
-        {
-            _stateMachine.Update();
         }
 
         private void OnEnable()

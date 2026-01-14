@@ -1,5 +1,4 @@
 ﻿using Cysharp.Threading.Tasks;
-using System;
 using System.Threading;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ namespace Assets.Scripts
     {
         private readonly float _gravity;
         private readonly PlayerMover _mover;
-        private bool _isGravityHandling;
+        public bool IsGravityHandling { get; private set; }
 
         public PlayerGravityHandler(PlayerMover mover, float gravity)
         {
@@ -19,12 +18,12 @@ namespace Assets.Scripts
 
         public async UniTask HandleGravity(CancellationToken token)
         {
-            if (_isGravityHandling)
+            if (IsGravityHandling)
             {
                 Debug.LogWarning("Gravity already handling");
                 return;
             }
-            _isGravityHandling = true;
+            IsGravityHandling = true;
 
             try
             {
@@ -40,7 +39,7 @@ namespace Assets.Scripts
             }
             finally
             {
-                _isGravityHandling = false;
+                IsGravityHandling = false;
             }
         }
     }

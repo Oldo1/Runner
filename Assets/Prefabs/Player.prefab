@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1472709156355351332}
   - component: {fileID: 5412037859927942525}
   - component: {fileID: -478743927370367146}
+  - component: {fileID: -8194460339510051820}
   - component: {fileID: 2006056640555252058}
   m_Layer: 0
   m_Name: Player
@@ -133,6 +134,7 @@ MonoBehaviour:
   _playerMover: {fileID: 1472709156355351332}
   _jumpData: {fileID: 11400000, guid: b7183ad88665709499b66c66885afae0, type: 2}
   _characterController: {fileID: 1002305225182513837}
+  _stateMachine: {fileID: -8194460339510051820}
 --- !u!114 &1472709156355351332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +173,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: -5909971739547135178}
+--- !u!114 &-8194460339510051820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222666320134827014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 043ad52d1b380744797519d80f031ec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &2006056640555252058
 CapsuleCollider:
   m_ObjectHideFlags: 0

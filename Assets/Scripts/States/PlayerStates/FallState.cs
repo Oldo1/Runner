@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.PlayerScripts;
+using UnityEngine;
 
-namespace Assets.Scripts.States
+namespace Assets.Scripts.States.PlayerState
 {
     public class FallState : GeneralState
     {
         private readonly Player _player;
 
-        public FallState(Player player, StateMachine stateMachine) : base(player, stateMachine)
+        public FallState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
         {
             _player = player;
         }

@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.PlayerScripts;
+using UnityEngine;
 
-namespace Assets.Scripts.States
+namespace Assets.Scripts.States.PlayerState
 {
     public class LeftStrafeState : GeneralState
     {
-        private Player _player;
+        private readonly Player _player;
 
-        public LeftStrafeState(Player player, StateMachine stateMachine) : base(player, stateMachine)
+        public LeftStrafeState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
         {
             _player = player;
         }

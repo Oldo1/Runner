@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.PlayerScripts;
+using UnityEngine;
 
-namespace Assets.Scripts.States
+namespace Assets.Scripts.States.PlayerState
 {
     public class MoveState : GeneralState
     {
-        public MoveState(Player player, StateMachine stateMachine) : base(player, stateMachine)
+        public MoveState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
         {
         }
 

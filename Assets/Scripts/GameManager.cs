@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
 {
-    public class Game : MonoBehaviour
+    public class GameManager : MonoBehaviour
     {
+        [SerializeField] GameStateMachine _gameStateMachine;
+
         private int _coinNumber;
-        private bool _isStarted;
-        private bool _isGameOver;
 
         public void Init()
         {
             GameEvents.OnDie += GameOver;
             GameEvents.OnCollectCoin += _ => IncreaseCoinNumber();
+            _gameStateMachine.Init(this);
         }
 
         private void IncreaseCoinNumber()
@@ -26,29 +28,18 @@ namespace Assets.Scripts
             GameEvents.InvokeOnGameOverEvent();
         }
 
-        private void StartGame()
+        public void StartGame()
         {
-            _isStarted = true;
             GameEvents.InvokeOnOnStartGame();   
         }
 
-        private void RestartGame()
+        public void RestartGame()
         {
-
+            var currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.buildIndex);
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                if (!_isStarted)
-                    StartGame();
-                else if (_isGameOver)
-                    RestartGame();
-            }
-        }
-
-        private void OnApplicationQuit()
+        private void OnDestroy()
         {
             GameEvents.OnDie -= GameOver;
             GameEvents.OnCollectCoin -= _ => IncreaseCoinNumber();

@@ -1,13 +1,14 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using Assets.Scripts.PlayerScripts;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Scripts.States
+namespace Assets.Scripts.States.PlayerState
 {
     public class JumpState : GeneralState
     {
         private readonly Player _player;
 
-        public JumpState(Player player, StateMachine stateMachine) : base(player, stateMachine)
+        public JumpState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
         {
             _player = player;
         }

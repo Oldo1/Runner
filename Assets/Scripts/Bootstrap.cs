@@ -12,8 +12,8 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private GameObject _gameOverUI;
     [SerializeField] private TextMeshProUGUI _coinsNumber;
     [SerializeField] private Transform _coinsTextTransform;
-    [SerializeField] private Game _game;
-    [SerializeField] private SegmentMover _segmentMover;
+    [SerializeField] private GameManager _game;
+    [SerializeField] private SegmentsMover _segmentMover;
     [SerializeField] private float _obstaclesSpawnRate;
     [SerializeField] private float _zOffset;
     

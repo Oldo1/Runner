@@ -1,10 +1,11 @@
-using Assets.Scripts;
 using Assets.Scripts.States;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SegmentMover : MonoBehaviour
+namespace Assets.Scripts
+{
+    public class SegmentsMover : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
     private HashSet<GameObject> _segments;
@@ -33,21 +34,26 @@ public class SegmentMover : MonoBehaviour
         enabled = false;
     }
 
-    private void OnDisable()
+    private void UnSubscribeEvents()
     {
-        GameEvents.OnGameOver -= DisableObject;
+        GameEvents.OnSpawnSegment -= AddSegment;
         GameEvents.OnDestroySegment -= RemoveSegment;
         GameEvents.OnGameOver -= DisableObject;
     }
 
     private void OnApplicationQuit()
     {
-        GameEvents.OnGameOver -= DisableObject;
+        UnSubscribeEvents();
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.OnSpawnSegment -= AddSegment;
         GameEvents.OnDestroySegment -= RemoveSegment;
         GameEvents.OnGameOver -= DisableObject;
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         foreach (var segment in _segments)
         {
@@ -56,3 +62,5 @@ public class SegmentMover : MonoBehaviour
         }
     }
 }
+}
+

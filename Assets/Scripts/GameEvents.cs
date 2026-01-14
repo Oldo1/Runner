@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.States;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -8,11 +7,12 @@ namespace Assets.Scripts
     {
         public static event Action OnDie;
         public static event Action OnGameOver;
-        public static event Action<GameObject> OnCollectCoin;
-        public static event Action<int> OnChangeCoinNumber;
+        public static event Action OnGameRestart;
         public static event Action OnStartGame;
+        public static event Action<GameObject> OnCollectCoin;
         public static event Action<GameObject> OnSpawnSegment;
         public static event Action<GameObject> OnDestroySegment;
+        public static event Action<int> OnChangeCoinNumber;
 
         public static void InvokeOnDieEvent()
         {
@@ -22,11 +22,6 @@ namespace Assets.Scripts
         public static void InvokeOnGameOverEvent()
         {
             OnGameOver?.Invoke();
-        }
-
-        public static void InvokeOnCollectCoinEvent(GameObject coin)
-        {
-            OnCollectCoin?.Invoke(coin);
         }
 
         public static void InvokeOnChangeCoinNumber(int coinsNumber)
@@ -47,6 +42,16 @@ namespace Assets.Scripts
         public static void InvokeOnDestroySegment(GameObject segment)
         {
             OnDestroySegment?.Invoke(segment);
+        }
+
+        public static void InvokeOnCollectCoinEvent(GameObject coin)
+        {
+            OnCollectCoin?.Invoke(coin);
+        }
+
+        public static void InvokeOnGameRestart()
+        {
+            OnGameRestart?.Invoke();
         }
     }
 }
