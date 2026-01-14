@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.States.PlayerState;
+using Assets.Scripts.States.PlayerStates;
 using System;
 using System.Collections.Generic;
 
@@ -16,9 +17,16 @@ namespace Assets.Scripts.PlayerScripts
                 { typeof(LeftStrafeState), new LeftStrafeState(player, this) },
                 { typeof(RightStrafeState), new RightStrafeState(player, this) },
                 { typeof(JumpState), new JumpState(player, this) },
-                { typeof(FallState), new FallState(player, this)}
+                { typeof(FallState), new FallState(player, this) },
+                { typeof(DeadState), new DeadState(this) }
             };
+            GameEvents.OnDie += SwitchState<DeadState>;
             SwitchState<MoveState>();
+        }
+
+        private void OnDestroy()
+        {
+            GameEvents.OnDie -= SwitchState<DeadState>;
         }
     }
 }

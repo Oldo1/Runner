@@ -3,18 +3,28 @@ using UnityEngine;
 
 public class PlayerMover : MonoBehaviour
 {
-    private CharacterController _characterController;
+    [SerializeField] private CharacterController _characterController;
+
     public bool IsOnGround => _characterController.isGrounded;
     public Vector3 Velocity { get; set; }
 
-    private void Awake()
+    public void Init()
     {
-        _characterController = GetComponent<CharacterController>();
-        GameEvents.OnStartGame += () => enabled = true;
+        GameEvents.OnStartGame += Enable;
     }
 
     private void Update()
     {
         _characterController.Move(Velocity * Time.deltaTime);
+    }
+
+    private void Enable()
+    {
+        enabled = true;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.OnStartGame -= Enable;
     }
 }

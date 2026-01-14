@@ -33,6 +33,7 @@ namespace Assets.Scripts
 
         public void Init()
         {
+            _playerMover.Init();
             _playerStrafe = new PlayerStrafeController(transform, _playerMover, _strafeSpeed);
             _gravityHandler = new PlayerGravityHandler(_playerMover, _jumpData.Gravity);
             _stateMachine.Init(this);

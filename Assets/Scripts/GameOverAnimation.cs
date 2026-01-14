@@ -12,4 +12,9 @@ public class GameOverAnimation : MonoBehaviour
         _restartHint.DOScale(new Vector3(1.15f, 1.15f, 0f), 0.5f).SetLoops(-1, LoopType.Yoyo);
     }
 
+    private void OnDestroy()
+    {
+        _gameOverText.DOKill();
+        _restartHint.DOKill();
+    }
 }

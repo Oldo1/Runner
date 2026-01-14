@@ -21,8 +21,8 @@ public class Bootstrap : MonoBehaviour
     {
         var playerSpawner = new PlayerSpawner(_playerPrefab);
         var obstacleSpawner = new SegmentsSpawner(_obstaclesPrefabs, _lastCreatedSegment, _zOffset, _obstaclesSpawnRate);
-        GameEvents.OnChangeCoinNumber += (newCoinsNumber) => _coinsNumber.text = newCoinsNumber.ToString();
-        GameEvents.OnGameOver += () => _gameOverUI.SetActive(true);
+        GameEvents.OnChangeCoinNumber += UpdateCoinNumber;
+        GameEvents.OnGameOver += SetActiveGameOverUI;
         var player = playerSpawner.Spawn(_playerSpawnPosition.position);
         _segmentMover.Init();
         player.Init();
@@ -31,5 +31,21 @@ public class Bootstrap : MonoBehaviour
         var playerMover = player.GetComponent<PlayerMover>();
         _segmentMover.enabled = false;
         playerMover.enabled = false;
+    }
+
+    private void SetActiveGameOverUI()
+    {
+        _gameOverUI.SetActive(true);
+    }
+
+    private void UpdateCoinNumber(int newCoinsNumber)
+    {
+        _coinsNumber.text = newCoinsNumber.ToString();
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.OnChangeCoinNumber -= UpdateCoinNumber;
+        GameEvents.OnGameOver -= SetActiveGameOverUI;
     }
 }
