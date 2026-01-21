@@ -1085,28 +1085,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1037662510}
-  - component: {fileID: 1037662509}
   - component: {fileID: 1037662511}
+  - component: {fileID: 1037662512}
   m_Layer: 0
-  m_Name: Game
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1037662509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1037662508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f8209ccfd06045469d08f2ecf3917b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gameStateMachine: {fileID: 1037662511}
 --- !u!4 &1037662510
 Transform:
   m_ObjectHideFlags: 0
@@ -1134,6 +1121,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc68bf9237f2a2488df27f45aafd619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1037662512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037662508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0231c6336368d74f9086d2a1b8454bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameStateMachine: {fileID: 1037662511}
 --- !u!1001 &1049423316
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1228,11 +1228,10 @@ MonoBehaviour:
   - {fileID: 1908039784555731360, guid: dcf4df4f1a019ac4ba8e71cde54f6fc4, type: 3}
   - {fileID: 1908039784555731360, guid: 4133b23b216025c43862291b6bc9fad3, type: 3}
   - {fileID: 1908039784555731360, guid: 7726a7e78b4b21c4b9be19d88447c65e, type: 3}
-  _lastCreatedSegment: {fileID: 1910203094}
   _gameOverUI: {fileID: 699860129}
   _coinsNumber: {fileID: 1904224921}
   _coinsTextTransform: {fileID: 598005534}
-  _game: {fileID: 1037662509}
+  _game: {fileID: 1037662512}
   _segmentMover: {fileID: 2096291875}
   _obstaclesSpawnRate: 1.9
   _zOffset: 10
@@ -1747,11 +1746,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1904224919}
   m_CullTransparentMesh: 1
---- !u!1 &1910203094 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1908039784555731360, guid: dcf4df4f1a019ac4ba8e71cde54f6fc4, type: 3}
-  m_PrefabInstance: {fileID: 655613635}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1910203098 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2670322840786265021, guid: dcf4df4f1a019ac4ba8e71cde54f6fc4, type: 3}
@@ -1791,7 +1785,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -360, y: 291}
+  m_AnchoredPosition: {x: -360, y: 235}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1982513766

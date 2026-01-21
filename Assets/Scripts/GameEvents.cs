@@ -9,6 +9,7 @@ namespace Assets.Scripts
         public static event Action OnGameOver;
         public static event Action OnGameRestart;
         public static event Action OnStartGame;
+        public static event Action OnPause;
         public static event Action<GameObject> OnCollectCoin;
         public static event Action<GameObject> OnSpawnSegment;
         public static event Action<GameObject> OnDestroySegment;
@@ -52,6 +53,11 @@ namespace Assets.Scripts
         public static void InvokeOnGameRestart()
         {
             OnGameRestart?.Invoke();
+        }
+
+        public static void InvokeOnPauseGame()
+        {
+            OnPause?.Invoke();
         }
     }
 }

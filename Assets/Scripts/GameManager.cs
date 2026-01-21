@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.States.GameStates;
+using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
@@ -8,9 +10,15 @@ namespace Assets.Scripts
         [SerializeField] GameStateMachine _gameStateMachine;
 
         private int _coinNumber;
+        public Type CurrentStateType => _gameStateMachine.CurrentStateType;
+
+        public static GameManager Instance { get; private set; } 
 
         public void Init()
         {
+            if (Instance == null)
+                Instance = this;
+
             GameEvents.OnDie += GameOver;
             GameEvents.OnCollectCoin += _ => IncreaseCoinNumber();
             _gameStateMachine.Init(this);
@@ -37,6 +45,11 @@ namespace Assets.Scripts
         {
             var currentScene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(currentScene.buildIndex);
+        }
+
+        public void Pause()
+        {
+            GameEvents.InvokeOnPauseGame();
         }
 
         private void OnDestroy()

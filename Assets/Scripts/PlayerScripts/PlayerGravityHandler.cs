@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using Assets.Scripts.States.GameStates;
+using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
 
@@ -24,21 +25,22 @@ namespace Assets.Scripts
                 return;
             }
             IsGravityHandling = true;
-
             try
             {
                 while (!_mover.IsOnGround)
                 {
                     token.ThrowIfCancellationRequested();
+                    if (GameManager.Instance.CurrentStateType == typeof(GamePausedState))
+                        await UniTask.WaitUntil(() => GameManager.Instance.CurrentStateType != typeof(GamePausedState));
                     _mover.Velocity -= _gravity * Time.deltaTime * Vector3.up;
                     await UniTask.NextFrame(token);
                 }
-                var newVelocity = _mover.Velocity;
-                newVelocity.y = -0.5f;
-                _mover.Velocity = newVelocity;
             }
             finally
             {
+                var newVelocity = _mover.Velocity;
+                newVelocity.y = -0.5f;
+                _mover.Velocity = newVelocity;
                 IsGravityHandling = false;
             }
         }

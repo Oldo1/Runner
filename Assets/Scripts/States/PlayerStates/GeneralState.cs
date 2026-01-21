@@ -25,7 +25,7 @@ namespace Assets.Scripts.States.PlayerState
                 else if (stateMachine.CurrentStateType != typeof(MoveState))
                     stateMachine.SwitchState<MoveState>();
             }
-            else if (!_player.IsOnGround && !_player.IsGravityHandling)
+            else if (!_player.IsOnGround && !_player.IsGravityHandling && stateMachine.CurrentStateType != typeof(JumpState))
                 stateMachine.SwitchState<FallState>();
         }
     }

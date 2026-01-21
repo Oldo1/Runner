@@ -1,3 +1,5 @@
+using Assets.Scripts.States.GameStates;
+using Assets.Scripts;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
@@ -59,6 +61,8 @@ public class PlayerStrafeController
         {
             while (Mathf.Abs(_playerTransform.position.x - targetLine.x) > 1e-11)
             {
+                if (GameManager.Instance.CurrentStateType == typeof(GamePausedState))
+                    await UniTask.WaitUntil(() => GameManager.Instance.CurrentStateType != typeof(GamePausedState));
                 var newPosition = Vector3.MoveTowards(_playerTransform.position, targetLine, _strafeSpeed * Time.deltaTime);
                 var newVelocity = _playerMover.Velocity;
                 newVelocity.x = (newPosition - _playerTransform.position).x / Time.deltaTime;

@@ -1,4 +1,3 @@
-using Assets.Scripts.States;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,6 +16,7 @@ namespace Assets.Scripts
             GameEvents.OnDestroySegment += RemoveSegment;
             GameEvents.OnGameOver += DisableObject;
             GameEvents.OnStartGame += EnableObject;
+            GameEvents.OnPause += DisableObject;
         }
 
         private void AddSegment(GameObject segment)
@@ -45,6 +45,7 @@ namespace Assets.Scripts
             GameEvents.OnDestroySegment -= RemoveSegment;
             GameEvents.OnGameOver -= DisableObject;
             GameEvents.OnStartGame -= EnableObject;
+            GameEvents.OnPause -= DisableObject;
         }
 
         private void OnApplicationQuit()

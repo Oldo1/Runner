@@ -1,8 +1,7 @@
-﻿using JetBrains.Annotations;
-using System;
+﻿using System;
 using UnityEngine;
 
-namespace Assets.Scripts.States
+namespace Assets.Scripts
 {
     public class Segment : MonoBehaviour
     {

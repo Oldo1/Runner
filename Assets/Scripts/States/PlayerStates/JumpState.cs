@@ -22,7 +22,7 @@ namespace Assets.Scripts.States.PlayerState
         private async UniTaskVoid JumpAsync()
         {
             _player.Jump();
-            await UniTask.NextFrame();
+            await UniTask.WaitUntil(() => !_player.IsOnGround);
             _player.Fall();
         }
     }

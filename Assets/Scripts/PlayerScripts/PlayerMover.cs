@@ -11,6 +11,7 @@ public class PlayerMover : MonoBehaviour
     public void Init()
     {
         GameEvents.OnStartGame += Enable;
+        GameEvents.OnPause += Disable;
     }
 
     private void Update()
@@ -23,8 +24,14 @@ public class PlayerMover : MonoBehaviour
         enabled = true;
     }
 
+    private void Disable()
+    {
+        enabled = false;
+    }
+
     private void OnDestroy()
     {
         GameEvents.OnStartGame -= Enable;
+        GameEvents.OnPause -= Disable;
     }
 }

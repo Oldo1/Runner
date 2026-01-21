@@ -1,4 +1,7 @@
 using Assets.Scripts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -8,7 +11,6 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private Transform _playerSpawnPosition;
     [SerializeField] private CameraFollow _cameraFollow;
     [SerializeField] private GameObject[] _obstaclesPrefabs;
-    [SerializeField] private GameObject _lastCreatedSegment;
     [SerializeField] private GameObject _gameOverUI;
     [SerializeField] private TextMeshProUGUI _coinsNumber;
     [SerializeField] private Transform _coinsTextTransform;
@@ -16,11 +18,13 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private SegmentsMover _segmentMover;
     [SerializeField] private float _obstaclesSpawnRate;
     [SerializeField] private float _zOffset;
-    
+
+    private IEnumerable<IDisposable> _disposables;
+
     private void Awake()
     {
+        var segmentSpawner = new SegmentsSpawner(_obstaclesPrefabs, _zOffset, _obstaclesSpawnRate);
         var playerSpawner = new PlayerSpawner(_playerPrefab);
-        var obstacleSpawner = new SegmentsSpawner(_obstaclesPrefabs, _lastCreatedSegment, _zOffset, _obstaclesSpawnRate);
         GameEvents.OnChangeCoinNumber += UpdateCoinNumber;
         GameEvents.OnGameOver += SetActiveGameOverUI;
         var player = playerSpawner.Spawn(_playerSpawnPosition.position);
@@ -31,6 +35,12 @@ public class Bootstrap : MonoBehaviour
         var playerMover = player.GetComponent<PlayerMover>();
         _segmentMover.enabled = false;
         playerMover.enabled = false;
+        AddDisposables(segmentSpawner);
+    }
+
+    private void AddDisposables(params IDisposable[] disposables)
+    {
+        _disposables = disposables;
     }
 
     private void SetActiveGameOverUI()
@@ -47,5 +57,7 @@ public class Bootstrap : MonoBehaviour
     {
         GameEvents.OnChangeCoinNumber -= UpdateCoinNumber;
         GameEvents.OnGameOver -= SetActiveGameOverUI;
+        foreach (var disposable in _disposables)
+            disposable.Dispose();
     }
 }

@@ -2,21 +2,23 @@
 
 namespace Assets.Scripts.States.GameStates
 {
-    public class GameStarted : GameBaseState
+    public class GamePausedState : GameBaseState
     {
-        public GameStarted(GameManager game, GameStateMachine stateMachine) : base(game, stateMachine)
+        public GamePausedState(GameManager game, GameStateMachine stateMachine) : base(game, stateMachine)
         {
         }
 
         public override void OnEnter()
         {
-            game.StartGame();
+            game.Pause();
         }
 
         public override void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
-                stateMachine.SwitchState<GamePausedState>();
+            {
+                stateMachine.SwitchState<GameStarted>();
+            }
         }
     }
 }

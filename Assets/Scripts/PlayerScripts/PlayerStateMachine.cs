@@ -21,12 +21,26 @@ namespace Assets.Scripts.PlayerScripts
                 { typeof(DeadState), new DeadState(this) }
             };
             GameEvents.OnDie += SwitchState<DeadState>;
+            GameEvents.OnStartGame += Enable;
+            GameEvents.OnPause += Disable;
             SwitchState<MoveState>();
+        }
+
+        private void Enable()
+        {
+            enabled = true;
+        }
+
+        private void Disable()
+        {
+            enabled = false;
         }
 
         private void OnDestroy()
         {
             GameEvents.OnDie -= SwitchState<DeadState>;
+            GameEvents.OnStartGame -= Enable;
+            GameEvents.OnPause -= Disable;
         }
     }
 }

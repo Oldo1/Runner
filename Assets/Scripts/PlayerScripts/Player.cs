@@ -24,19 +24,19 @@ namespace Assets.Scripts
         public int RightLineNumber => _playerStrafe.RightLineNumber;
         public int CurrentLineNumber => _playerStrafe.CurrentLineNumber;
 
-        public void Die()
-        {
-            _playerMover.enabled = false;
-            _cancelationToken.Cancel();
-            GameEvents.InvokeOnDieEvent();
-        }
-
         public void Init()
         {
             _playerMover.Init();
             _playerStrafe = new PlayerStrafeController(transform, _playerMover, _strafeSpeed);
             _gravityHandler = new PlayerGravityHandler(_playerMover, _jumpData.Gravity);
             _stateMachine.Init(this);
+        }
+
+        public void Die()
+        {
+            _playerMover.enabled = false;
+            _cancelationToken.Cancel();
+            GameEvents.InvokeOnDieEvent();
         }
 
         public void StrafeRight()
