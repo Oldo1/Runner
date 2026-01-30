@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Assets.Scripts.PlayerScripts
 {
-    public class PlayerStateMachine : StateMachine<PlayerBaseState>
+    public class PlayerStateMachine : StateMachine<PlayerBaseState>, IService
     {
         public Type CurrentStateType => currentState.GetType();
 
@@ -21,26 +21,13 @@ namespace Assets.Scripts.PlayerScripts
                 { typeof(DeadState), new DeadState(this) }
             };
             GameEvents.OnDie += SwitchState<DeadState>;
-            GameEvents.OnStartGame += Enable;
-            GameEvents.OnPause += Disable;
             SwitchState<MoveState>();
-        }
-
-        private void Enable()
-        {
-            enabled = true;
-        }
-
-        private void Disable()
-        {
-            enabled = false;
+            ServiceLocator.Register(this);
         }
 
         private void OnDestroy()
         {
             GameEvents.OnDie -= SwitchState<DeadState>;
-            GameEvents.OnStartGame -= Enable;
-            GameEvents.OnPause -= Disable;
         }
     }
 }

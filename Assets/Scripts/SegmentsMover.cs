@@ -4,58 +4,27 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class SegmentsMover : MonoBehaviour
+    public class SegmentsMover : MonoBehaviour, IService
     {
         [SerializeField] private float _moveSpeed;
-        private HashSet<GameObject> _segments;
+        private HashSet<Segment> _segments;
 
         public void Init()
         {
-            _segments = FindObjectsByType<Segment>(FindObjectsSortMode.None).Select(x => x.gameObject).ToHashSet();
+            _segments = FindObjectsByType<Segment>(FindObjectsSortMode.None).ToHashSet();
+            ServiceLocator.Register(this);
             GameEvents.OnSpawnSegment += AddSegment;
             GameEvents.OnDestroySegment += RemoveSegment;
-            GameEvents.OnGameOver += DisableObject;
-            GameEvents.OnStartGame += EnableObject;
-            GameEvents.OnPause += DisableObject;
         }
 
-        private void AddSegment(GameObject segment)
+        private void AddSegment(Segment segment)
         {
             _segments.Add(segment);
         }
 
-        private void RemoveSegment(GameObject segment)
+        private void RemoveSegment(Segment segment)
         {
             _segments.Remove(segment);
-        }
-
-        private void DisableObject()
-        {
-            enabled = false;
-        }
-
-        private void EnableObject()
-        {
-            enabled = true;
-        }
-
-        private void UnSubscribeEvents()
-        {
-            GameEvents.OnSpawnSegment -= AddSegment;
-            GameEvents.OnDestroySegment -= RemoveSegment;
-            GameEvents.OnGameOver -= DisableObject;
-            GameEvents.OnStartGame -= EnableObject;
-            GameEvents.OnPause -= DisableObject;
-        }
-
-        private void OnApplicationQuit()
-        {
-            UnSubscribeEvents();
-        }
-
-        private void OnDestroy()
-        {
-            UnSubscribeEvents();
         }
 
         private void Update()

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Player Jump data
   m_EditorClassIdentifier: 
   _jumpHeight: 1.5
-  _jumpTime: 0.5
+  _jumpTime: 0.65

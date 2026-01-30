@@ -10,9 +10,10 @@ namespace Assets.Scripts
         public static event Action OnGameRestart;
         public static event Action OnStartGame;
         public static event Action OnPause;
-        public static event Action<GameObject> OnCollectCoin;
-        public static event Action<GameObject> OnSpawnSegment;
-        public static event Action<GameObject> OnDestroySegment;
+        public static event Action OnResume;
+        public static event Action<Coin> OnCollectCoin;
+        public static event Action<Segment> OnSpawnSegment;
+        public static event Action<Segment> OnDestroySegment;
         public static event Action<int> OnChangeCoinNumber;
 
         public static void InvokeOnDieEvent()
@@ -35,17 +36,17 @@ namespace Assets.Scripts
             OnStartGame?.Invoke();
         }
 
-        public static void InvokeOnSpawnSegment(GameObject segment)
+        public static void InvokeOnSpawnSegment(Segment segment)
         {
             OnSpawnSegment?.Invoke(segment);
         }
 
-        public static void InvokeOnDestroySegment(GameObject segment)
+        public static void InvokeOnDestroySegment(Segment segment)
         {
             OnDestroySegment?.Invoke(segment);
         }
 
-        public static void InvokeOnCollectCoinEvent(GameObject coin)
+        public static void InvokeOnCollectCoinEvent(Coin coin)
         {
             OnCollectCoin?.Invoke(coin);
         }
@@ -58,6 +59,11 @@ namespace Assets.Scripts
         public static void InvokeOnPauseGame()
         {
             OnPause?.Invoke();
+        }
+
+        public static void InvokeOnResumeGame()
+        {
+            OnResume?.Invoke();
         }
     }
 }

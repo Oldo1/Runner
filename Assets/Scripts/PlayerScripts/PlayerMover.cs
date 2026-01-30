@@ -1,7 +1,7 @@
 using Assets.Scripts;
 using UnityEngine;
 
-public class PlayerMover : MonoBehaviour
+public class PlayerMover : MonoBehaviour, IService
 {
     [SerializeField] private CharacterController _characterController;
 
@@ -10,28 +10,11 @@ public class PlayerMover : MonoBehaviour
 
     public void Init()
     {
-        GameEvents.OnStartGame += Enable;
-        GameEvents.OnPause += Disable;
+        ServiceLocator.Register(this);
     }
 
     private void Update()
     {
         _characterController.Move(Velocity * Time.deltaTime);
-    }
-
-    private void Enable()
-    {
-        enabled = true;
-    }
-
-    private void Disable()
-    {
-        enabled = false;
-    }
-
-    private void OnDestroy()
-    {
-        GameEvents.OnStartGame -= Enable;
-        GameEvents.OnPause -= Disable;
     }
 }

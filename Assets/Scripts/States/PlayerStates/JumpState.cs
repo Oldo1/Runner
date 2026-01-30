@@ -16,6 +16,7 @@ namespace Assets.Scripts.States.PlayerState
         public override void OnEnter()
         {
             Debug.Log("Jump state");
+            PlayerAnimationController.Instance.SetIsJumpingParameter(true);
             JumpAsync().Forget();
         }
 
@@ -24,6 +25,11 @@ namespace Assets.Scripts.States.PlayerState
             _player.Jump();
             await UniTask.WaitUntil(() => !_player.IsOnGround);
             _player.Fall();
+        }
+
+        public override void OnExit()
+        {
+            PlayerAnimationController.Instance.SetIsJumpingParameter(false);
         }
     }
 }

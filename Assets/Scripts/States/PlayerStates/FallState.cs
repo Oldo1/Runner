@@ -14,7 +14,8 @@ namespace Assets.Scripts.States.PlayerState
 
         public override void OnEnter()
         {
-            Debug.Log("Fall state"); 
+
+            Debug.Log("Fall state");
             _player.Fall();
         }
     }

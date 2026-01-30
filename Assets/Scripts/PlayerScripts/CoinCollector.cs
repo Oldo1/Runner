@@ -8,8 +8,8 @@ namespace Assets.Scripts
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Coin"))
-                _player.Collect(other.gameObject);
+            if (other.TryGetComponent(out Coin coin))
+                _player.Collect(coin);
         }
     }
 }

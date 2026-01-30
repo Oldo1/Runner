@@ -1,18 +1,22 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
     public class Segment : MonoBehaviour
     {
-        public Action OnEnterSpawnTrigger;
+        [SerializeField] private GameObject _coinsRoad;
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (gameObject.CompareTag("Segment") && other.TryGetComponent(out DestroyTrigger trigger))
+        public bool TryGetSegmentCoins(out IEnumerable<GameObject> coins)
+        { 
+            if (_coinsRoad != null)
             {
-                OnEnterSpawnTrigger?.Invoke();
+                coins = _coinsRoad.GetComponentsInChildren<Coin>(true).Select(x => x.gameObject);
+                return true;
             }
+            coins = null;
+            return false;
         }
     }
 }

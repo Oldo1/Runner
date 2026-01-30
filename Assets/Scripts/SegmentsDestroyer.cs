@@ -1,5 +1,4 @@
 using Assets.Scripts;
-using Assets.Scripts.States;
 using UnityEngine;
 
 public class SegmentsDestroyer : MonoBehaviour
@@ -9,8 +8,11 @@ public class SegmentsDestroyer : MonoBehaviour
         var parentGameObject = other.transform.parent.gameObject;
         if (parentGameObject != null && parentGameObject.TryGetComponent(out Segment segment))
         {
-            Destroy(parentGameObject);
-            GameEvents.InvokeOnDestroySegment(parentGameObject);
+            if (!GameObjectPoolService.IsSpawned(parentGameObject))
+                Destroy(parentGameObject);
+            else
+                GameObjectPoolService.Despawn(parentGameObject);
+            GameEvents.InvokeOnDestroySegment(segment);
         }
     }
 }

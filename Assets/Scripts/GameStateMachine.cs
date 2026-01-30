@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.States.GameStates;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -8,25 +9,24 @@ namespace Assets.Scripts
     {
         public Type CurrentStateType => currentState.GetType();
 
-        public void Init(GameManager game)
+        public void Init(GameManager game, Transform gameOverText, Transform restartHint, Transform gameStartHint)
         {
             states = new Dictionary<Type, GameBaseState>()
             {
                 { typeof(GameStarted), new GameStarted(game, this) },
-                { typeof(GameOverState), new GameOverState(game, this) },
-                { typeof(GameNotStarted), new GameNotStarted(game, this) },
-                { typeof(GamePausedState), new GamePausedState(game, this) }
+                { typeof(GameOverState), new GameOverState(gameOverText, restartHint, game ,this) },
+                { typeof(GameNotStarted), new GameNotStarted(gameStartHint ,game, this) },
             };
-            GameEvents.OnGameOver += OnGameOver;
+            GameEvents.OnDie += OnDie;
             SwitchState<GameNotStarted>();
         }
 
         private void OnDestroy()
         {
-            GameEvents.OnGameOver -= OnGameOver;
+            GameEvents.OnDie -= OnDie;
         }
 
-        private void OnGameOver()
+        private void OnDie()
         {
             SwitchState<GameOverState>();
         }

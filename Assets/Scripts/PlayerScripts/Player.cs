@@ -12,6 +12,7 @@ namespace Assets.Scripts
         [SerializeField] private JumpData _jumpData;
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private PlayerStateMachine _stateMachine;
+        [SerializeField] private Animator _playerAnimator;
 
         private PlayerStrafeController _playerStrafe;
         private CancellationTokenSource _cancelationToken; 
@@ -27,9 +28,12 @@ namespace Assets.Scripts
         public void Init()
         {
             _playerMover.Init();
+            _stateMachine.Init(this);
             _playerStrafe = new PlayerStrafeController(transform, _playerMover, _strafeSpeed);
             _gravityHandler = new PlayerGravityHandler(_playerMover, _jumpData.Gravity);
-            _stateMachine.Init(this);
+            var animationHandler = new PlayerAnimationController(_playerAnimator);
+            _playerMover.enabled = false;
+            _stateMachine.enabled = false;
         }
 
         public void Die()
@@ -59,10 +63,10 @@ namespace Assets.Scripts
             _gravityHandler.HandleGravity(_cancelationToken.Token).Forget();
         }
 
-        public void Collect(GameObject coin)
+        public void Collect(Coin coin)
         {
-            Destroy(coin);
-            Debug.Log("Coin collect");
+            coin.gameObject.SetActive(false);
+            Debug.Log("Coin collected");
             GameEvents.InvokeOnCollectCoinEvent(coin);
         }
 

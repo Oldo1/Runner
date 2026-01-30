@@ -30,8 +30,8 @@ namespace Assets.Scripts
                 while (!_mover.IsOnGround)
                 {
                     token.ThrowIfCancellationRequested();
-                    if (GameManager.Instance.CurrentStateType == typeof(GamePausedState))
-                        await UniTask.WaitUntil(() => GameManager.Instance.CurrentStateType != typeof(GamePausedState));
+                    if (GameManager.Instance.IsPaused)
+                        await UniTask.WaitUntil(() => !GameManager.Instance.IsPaused);
                     _mover.Velocity -= _gravity * Time.deltaTime * Vector3.up;
                     await UniTask.NextFrame(token);
                 }
