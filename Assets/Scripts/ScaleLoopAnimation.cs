@@ -11,7 +11,6 @@ namespace Assets.Scripts
         public ScaleLoopAnimation(Transform transform)
         {
             _transform = transform;
-            DisposablesContainer.Add(this);
         }
 
         public void Play(Vector3 endValue, float duration)

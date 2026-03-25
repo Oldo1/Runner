@@ -9,14 +9,9 @@ namespace Assets.Scripts
         private readonly static Dictionary<GameObject, GameObjectPool> _gameObjectPools = new();
         private readonly static Dictionary<GameObject, GameObject> _spawnedGameObjectsMap = new();
 
-        public static void CreatePool(GameObject prefab, int initialCapacity, int maxSize)
+        public static void AddGameObjectPool(GameObjectPool objectPool)
         {
-            if (initialCapacity > maxSize)
-                throw new ArgumentException("initial capacity can't be greater than max size");
-            if (_gameObjectPools.ContainsKey(prefab))
-                throw new InvalidOperationException("pool already created for this prefab");
-            var objectPool = new GameObjectPool(prefab, initialCapacity, maxSize);
-            _gameObjectPools.Add(prefab, objectPool);
+            _gameObjectPools.Add(objectPool.Prefab, objectPool);
         }
 
         public static GameObject Spawn(GameObject prefab, Transform parent = null)

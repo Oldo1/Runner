@@ -7,7 +7,7 @@ namespace Assets.Scripts.States.PlayerState
     {
         private readonly Player _player;
 
-        public FallState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+        public FallState(Player player, PlayerStateMachine stateMachine, IInputHandler inputHandler) : base(player, stateMachine, inputHandler)
         {
             _player = player;
         }
@@ -17,6 +17,12 @@ namespace Assets.Scripts.States.PlayerState
 
             Debug.Log("Fall state");
             _player.Fall();
+            base.OnEnter();
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
         }
     }
 }

@@ -7,17 +7,21 @@ namespace Assets.Scripts.States.PlayerState
     public class JumpState : GeneralState
     {
         private readonly Player _player;
+        private readonly PlayerAnimationController _playerAnimationController;
 
-        public JumpState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+        public JumpState(Player player, PlayerStateMachine stateMachine, IInputHandler inputHandler,
+            PlayerAnimationController playerAnimationController) : base(player, stateMachine, inputHandler)
         {
             _player = player;
+            _playerAnimationController = playerAnimationController;
         }
 
         public override void OnEnter()
         {
             Debug.Log("Jump state");
-            PlayerAnimationController.Instance.SetIsJumpingParameter(true);
+            _playerAnimationController.SetIsJumpingParameter(true);
             JumpAsync().Forget();
+            base.OnEnter();
         }
 
         private async UniTaskVoid JumpAsync()
@@ -29,7 +33,8 @@ namespace Assets.Scripts.States.PlayerState
 
         public override void OnExit()
         {
-            PlayerAnimationController.Instance.SetIsJumpingParameter(false);
+            _playerAnimationController.SetIsJumpingParameter(false);
+            base.OnExit();
         }
     }
 }

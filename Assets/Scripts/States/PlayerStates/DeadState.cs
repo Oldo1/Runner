@@ -6,13 +6,17 @@ namespace Assets.Scripts.States.PlayerStates
 {
     public class DeadState : PlayerBaseState
     {
-        public DeadState(PlayerStateMachine stateMachine) : base(stateMachine)
+        private readonly IDisable _playerInputHandler;
+
+        public DeadState(PlayerStateMachine stateMachine, IDisable playerInputHandler) : base(stateMachine)
         {
+            _playerInputHandler = playerInputHandler;
         }
 
         public override void OnEnter()
         {
             Debug.Log("Dead");
+            _playerInputHandler.Disable();
         }
     }
 }

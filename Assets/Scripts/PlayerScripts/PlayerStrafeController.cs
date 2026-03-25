@@ -1,4 +1,3 @@
-using Assets.Scripts.States.GameStates;
 using Assets.Scripts;
 using Cysharp.Threading.Tasks;
 using System;
@@ -10,6 +9,7 @@ public class PlayerStrafeController
     private readonly PlayerMover _playerMover;
     private readonly Transform _playerTransform;
     private readonly float _strafeSpeed;
+    private readonly GameManager _gameManager;
 
     private const float LINE_OFFSET = 1;
 
@@ -18,7 +18,7 @@ public class PlayerStrafeController
     public int CurrentLineNumber { get; private set; }
     public bool IsStrafing { get; private set; }
 
-    public PlayerStrafeController(Transform playerTransform, PlayerMover playerMover, float strafeSpeed)
+    public PlayerStrafeController(Transform playerTransform, PlayerMover playerMover, float strafeSpeed, GameManager gameManager)
     {
         _playerMover = playerMover;
         _playerTransform = playerTransform;
@@ -27,7 +27,7 @@ public class PlayerStrafeController
         RightLineNumber = 3;
         var midLineNumber = (LeftLineNumber + RightLineNumber) / 2;
         CurrentLineNumber = (int)playerTransform.position.x + midLineNumber;
-
+        _gameManager = gameManager;
     }
 
     public void StrafeRight(CancellationToken token)
@@ -61,8 +61,8 @@ public class PlayerStrafeController
         {
             while (Mathf.Abs(_playerTransform.position.x - targetLine.x) > 1e-11)
             {
-                if (GameManager.Instance.IsPaused)
-                    await UniTask.WaitUntil(() => !GameManager.Instance.IsPaused);
+                if (_gameManager.IsPaused)
+                    await UniTask.WaitUntil(() => !_gameManager.IsPaused);
                 var newPosition = Vector3.MoveTowards(_playerTransform.position, targetLine, _strafeSpeed * Time.deltaTime);
                 var newVelocity = _playerMover.Velocity;
                 newVelocity.x = (newPosition - _playerTransform.position).x / Time.deltaTime;

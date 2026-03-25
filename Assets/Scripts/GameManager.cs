@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.States.GameStates;
-using System;
+﻿using Assets.Scripts.PlayerScripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,21 +9,18 @@ namespace Assets.Scripts
         [SerializeField] GameStateMachine _gameStateMachine;
 
         private int _coinNumber;
-        public Type CurrentStateType => _gameStateMachine.CurrentStateType;
         public bool IsPaused { get; private set; }
 
-        public static GameManager Instance { get; private set; } 
-
-        public void Init(Transform gameOverText, Transform restartHint, Transform gameStartHint)
+        public void Init(GameOverAnimation gameOverAnimation, ScaleLoopAnimation scaleLoopAnimation, UIInputHandler uiInputHandler, GameplayInputHandler gameplayInputHandler,
+            PlayerMover playerMover, PlayerStateMachine playerStateMachine, SegmentsSpawnerAsync segmentsSpawnerAsync, CoinsRotator coinsRotator, 
+            PlayerAnimationController playerAnimationController, SegmentsMover segmentsMover)
         {
-            if (Instance == null)
-                Instance = this;
-
-            GameEvents.OnCollectCoin += _ => IncreaseCoinNumber();
-            _gameStateMachine.Init(this, gameOverText, restartHint, gameStartHint);
+            GameEvents.OnCollectCoin += IncreaseCoinNumber;
+            _gameStateMachine.Init(this, gameOverAnimation, scaleLoopAnimation, uiInputHandler, gameplayInputHandler, playerMover, playerStateMachine, segmentsSpawnerAsync, coinsRotator,
+                playerAnimationController, segmentsMover);
         }
 
-        private void IncreaseCoinNumber()
+        private void IncreaseCoinNumber(Coin coin)
         {
             _coinNumber++;
             GameEvents.InvokeOnChangeCoinNumber(_coinNumber);
@@ -62,7 +58,7 @@ namespace Assets.Scripts
         private void OnDestroy()
         {
             GameEvents.OnDie -= GameOver;
-            GameEvents.OnCollectCoin -= _ => IncreaseCoinNumber();
+            GameEvents.OnCollectCoin -= IncreaseCoinNumber;
         }
     }
 }

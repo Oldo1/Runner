@@ -1,17 +1,11 @@
-using Assets.Scripts;
 using UnityEngine;
 
-public class PlayerMover : MonoBehaviour, IService
+public class PlayerMover : MonoBehaviour
 {
     [SerializeField] private CharacterController _characterController;
 
     public bool IsOnGround => _characterController.isGrounded;
     public Vector3 Velocity { get; set; }
-
-    public void Init()
-    {
-        ServiceLocator.Register(this);
-    }
 
     private void Update()
     {

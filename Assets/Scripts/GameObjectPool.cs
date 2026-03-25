@@ -9,6 +9,7 @@ namespace Assets.Scripts
         private readonly ObjectPool<GameObject> _objectPool;
         private readonly GameObject _prefab;
         private Transform _parent;
+        public GameObject Prefab => _prefab;
 
         public GameObjectPool(GameObject prefab, int initialCapacity, int maxSize)
         {
@@ -22,9 +23,7 @@ namespace Assets.Scripts
                 defaultCapacity: initialCapacity,
                 maxSize: maxSize
             );
-            DisposablesContainer.Add(this);
         }
-
 
         private GameObject CreateFunc()
         {

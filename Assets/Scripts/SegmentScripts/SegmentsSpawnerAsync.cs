@@ -1,29 +1,21 @@
 ﻿using Cysharp.Threading.Tasks;
-using System;
 using System.Threading;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class SegmentsSpawnerAsync : SegmentSpawner, IService
+    public class SegmentsSpawnerAsync : SegmentSpawner
     {
         private CancellationTokenSource _cancellationTokenSource;
-        private Transform _lastCreatedSegmentTransform;
-        private GameObject[] _segmentsPrefabs;
-        private readonly float _zOffset;
-        private readonly float _spawnRate;
         private bool _isSpawning;
 
-        public SegmentsSpawnerAsync(GameObject[] segmentsPrefabs, float zOffset, float spawnRate) : base(segmentsPrefabs, zOffset)
+        private readonly float _spawnRate;
+        private readonly GameManager _gameManager;
+
+        public SegmentsSpawnerAsync(GameObject[] segmentsPrefabs, float zOffset, float spawnRate, GameManager gameManager) : base(segmentsPrefabs, zOffset)
         {
-            _segmentsPrefabs = segmentsPrefabs;
-            _zOffset = zOffset;
             _spawnRate = spawnRate;
-            foreach (var segmentPrefab in segmentsPrefabs)
-            {
-                GameObjectPoolService.CreatePool(segmentPrefab, initialCapacity: 20, maxSize: 30);
-            }
-            ServiceLocator.Register(this);
+            _gameManager = gameManager;
         }
 
         public void StartSpawning()
@@ -50,8 +42,8 @@ namespace Assets.Scripts
                 while (true)
                 {
                     token.ThrowIfCancellationRequested();
-                    if (GameManager.Instance.IsPaused)
-                        await UniTask.WaitUntil(() => !GameManager.Instance.IsPaused);
+                    if (_gameManager)
+                        await UniTask.WaitUntil(() => !_gameManager.IsPaused);
                     Spawn();
                     await UniTask.WaitForSeconds(_spawnRate, cancellationToken: token);
                 }

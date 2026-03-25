@@ -1,4 +1,3 @@
-using Assets.Scripts;
 using DG.Tweening;
 using System;
 using UnityEngine;
@@ -12,7 +11,6 @@ public class GameOverAnimation : IDisposable
     {
         _gameOverText = gameOverText;
         _restartHint = restartHint;
-        DisposablesContainer.Add(this);
     }
 
     public void Play()

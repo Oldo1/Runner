@@ -1,5 +1,10 @@
 using Assets;
 using Assets.Scripts;
+using Assets.Scripts.PlayerScripts;
+using Cysharp.Threading.Tasks.Triggers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -8,9 +13,9 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private Transform _playerSpawnPosition;
     [SerializeField] private CameraFollow _cameraFollow;
-    [SerializeField] private GameObject[] _obstaclesPrefabs;
+    [SerializeField] private GameObject[] _segmentsPrefabs;
     [SerializeField] private TextMeshProUGUI _coinsNumber;
-    [SerializeField] private GameManager _game;
+    [SerializeField] private GameManager _gameManager;
     [SerializeField] private SegmentsMover _segmentMover;
     [SerializeField] private float _obstaclesSpawnRate;
     [SerializeField] private float _zOffset;
@@ -21,25 +26,65 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private Transform _restartHint;
     [SerializeField] private GameObject _coinPrefab;
     [SerializeField] private CoinsRotator _coinsRotator;
+    [SerializeField] private GameObject _pauseText;
+    [SerializeField] private JumpData _jumpData;
+
+    private List<IDisposable> _disposables;
 
     private void Awake()
     {
+        _disposables = new List<IDisposable>();
         SegmentSpawner.FindLastCreatedSegmentTransform();
         _coinsRotator.Init();
-        var segmentSpawnerAsync = new SegmentsSpawnerAsync(_obstaclesPrefabs, _zOffset, _obstaclesSpawnRate);
-        var segmentSpawner = new SegmentsSpawner(_obstaclesPrefabs, _zOffset);
+
+        var segmentSpawnerAsync = new SegmentsSpawnerAsync(_segmentsPrefabs, _zOffset, _obstaclesSpawnRate, _gameManager);
+        var segmentSpawner = new SegmentsSpawner(_segmentsPrefabs, _zOffset);
+        AddGameObjectPools(_segmentsPrefabs);
         segmentSpawner.Spawn(10);
+
         var playerSpawner = new PlayerSpawner(_playerPrefab);
+        var playerInput = new PlayerInput();
+        var gameplayInputHandler = new GameplayInputHandler(playerInput);
+        var UIInputHandler = new UIInputHandler(playerInput);
+
         SubscribeEvents();
         var player = playerSpawner.Spawn(_playerSpawnPosition.position);
-        player.Init();
+        var playerMover = player.GetComponent<PlayerMover>();
+        var playerStateMachine = player.GetComponent<PlayerStateMachine>();
+
+        var strafeStrafeController = new PlayerStrafeController(player.transform, playerMover, strafeSpeed: 10, _gameManager);
+        var playerGravityHandler = new PlayerGravityHandler(playerMover, _jumpData.Gravity, _gameManager);
+        var playerAnimationController = new PlayerAnimationController(player.GetComponentInChildren<Animator>());
+        var scaleLoopAnimation = new ScaleLoopAnimation(_gameStartHintUI.transform);
+        var gameOverAnimation = new GameOverAnimation(_gameOverText, _restartHint);
+
+        player.Init(strafeStrafeController, playerGravityHandler);
+        playerStateMachine.Init(player, gameplayInputHandler, gameplayInputHandler, playerAnimationController);
         _segmentMover.Init();
         _cameraFollow.Init(player.transform);
-        _game.Init(_gameOverText, _restartHint, _gameStartHintUI.transform);
-        _segmentMover.enabled = false;
+        _gameManager.Init(gameOverAnimation, scaleLoopAnimation, UIInputHandler, gameplayInputHandler, playerMover, playerStateMachine, segmentSpawnerAsync, _coinsRotator,
+            playerAnimationController, _segmentMover);
+
+        AddDisposables(gameplayInputHandler, UIInputHandler, gameOverAnimation, 
+            playerInput, scaleLoopAnimation, _coinsRotator, _segmentMover, playerAnimationController);
     }
 
+    private void AddGameObjectPools(params GameObject[] prefabs)
+    {
+        foreach (var prefab in prefabs)
+        {
+            var objectPool = new GameObjectPool(prefab, initialCapacity: 20, maxSize: 30);
+            GameObjectPoolService.AddGameObjectPool(objectPool);
+            _disposables.Add(objectPool);
+        }
 
+    }
+
+    private void AddDisposables(params IDisposable[] disposables)
+    {
+        foreach (var disposable in disposables.Distinct())
+            _disposables.Add(disposable);
+    }
 
     private void SubscribeEvents()
     {
@@ -47,8 +92,22 @@ public class Bootstrap : MonoBehaviour
         GameEvents.OnGameOver += SetActiveGameOverUI;
         GameEvents.OnStartGame += SetInactivePanelUI;
         GameEvents.OnStartGame += SetInActiveStartHintUI;
-        GameEvents.OnGameOver += SetActivePanelUi;
+        GameEvents.OnGameOver += SetActivePanelUI;
         GameEvents.OnSpawnSegment += RespawnCoins;
+        GameEvents.OnPause += SetActivePanelUI;
+        GameEvents.OnResume += SetInactivePanelUI;
+    }
+
+    private void UnSubscribeEvents()
+    {
+        GameEvents.OnChangeCoinNumber += UpdateCoinNumber;
+        GameEvents.OnGameOver += SetActiveGameOverUI;
+        GameEvents.OnStartGame += SetInactivePanelUI;
+        GameEvents.OnStartGame += SetInActiveStartHintUI;
+        GameEvents.OnGameOver += SetActivePanelUI;
+        GameEvents.OnSpawnSegment += RespawnCoins;
+        GameEvents.OnPause += SetActivePanelUI;
+        GameEvents.OnResume += SetInactivePanelUI;
     }
 
     public void RespawnCoins(Segment segment)
@@ -62,7 +121,7 @@ public class Bootstrap : MonoBehaviour
         }
     }
 
-    private void SetActivePanelUi()
+    private void SetActivePanelUI()
     {
         _panelUI.SetActive(true);
     }
@@ -89,22 +148,15 @@ public class Bootstrap : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameEvents.OnChangeCoinNumber -= UpdateCoinNumber;
-        GameEvents.OnGameOver -= SetActiveGameOverUI;
-        GameEvents.OnStartGame -= SetInactivePanelUI;
-        GameEvents.OnStartGame -= SetInActiveStartHintUI;
-        GameEvents.OnGameOver -= SetActivePanelUi;
-        GameEvents.OnSpawnSegment -= RespawnCoins;
+        UnSubscribeEvents();
         DisposeAll();
-        DisposablesContainer.Clear();
+        _disposables.Clear();
         GameObjectPoolService.Clear();
-        ServiceLocator.Clear();
     }
 
     private void DisposeAll()
     {
-        var disposables = DisposablesContainer.Disposables;
-        foreach (var disposable in disposables)
+        foreach (var disposable in _disposables)
             disposable.Dispose();
     }
 }

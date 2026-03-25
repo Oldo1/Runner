@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.PlayerScripts;
+using UnityEngine;
 
 namespace Assets.Scripts.States.GameStates
 {
@@ -9,20 +10,23 @@ namespace Assets.Scripts.States.GameStates
         private readonly CoinsRotator _coinsRotator;
         private readonly PlayerAnimationController _playerAnimationController;
         private readonly SegmentsMover _segmentsMover;
+        private readonly UIInputHandler _inputHandler;
 
-        public GameOverState(Transform gameOverText, Transform restartHint, GameManager game, GameStateMachine stateMachine) : base(game, stateMachine)
+        public GameOverState(GameOverAnimation gameOverAnimation, GameManager game, GameStateMachine stateMachine, SegmentsSpawnerAsync segmentsSpawnerAsync,
+            CoinsRotator coinsRotator, PlayerAnimationController playerAnimationController, SegmentsMover segmentsMover, UIInputHandler uiInputHandler) : base(game, stateMachine)
         {
-            _gameOverAnimation = new GameOverAnimation(gameOverText, restartHint);
-            _segmentsSpawner = ServiceLocator.Get<SegmentsSpawnerAsync>();
-            _coinsRotator = ServiceLocator.Get<CoinsRotator>();
-            _playerAnimationController = ServiceLocator.Get<PlayerAnimationController>();
-            _segmentsMover = ServiceLocator.Get<SegmentsMover>();
+            _gameOverAnimation = gameOverAnimation;
+            _segmentsSpawner = segmentsSpawnerAsync;
+            _coinsRotator = coinsRotator;
+            _playerAnimationController = playerAnimationController;
+            _segmentsMover = segmentsMover;
+            _inputHandler = uiInputHandler;
         }
 
         public override void OnEnter()
         {
             game.GameOver();
-            
+            _inputHandler.Enable();
             _gameOverAnimation.Play();
             _segmentsSpawner.StopSpawning();
             _playerAnimationController.Pause();
@@ -32,14 +36,13 @@ namespace Assets.Scripts.States.GameStates
 
         public override void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
+            if (_inputHandler.WasTap())
                 game.RestartGame();
-            }
         }
 
         public override void OnExit()
         {
+            _inputHandler.Disable();
             _gameOverAnimation.Kill();
         }
     }

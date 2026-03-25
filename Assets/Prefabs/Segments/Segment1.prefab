@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7994364872695083505}
   - component: {fileID: -6111318291640142402}
-  - component: {fileID: 150702122231474907}
+  - component: {fileID: 149557806157915136}
   m_Layer: 0
   m_Name: Segment1
   m_TagString: Segment
@@ -61,7 +61,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &150702122231474907
+--- !u!114 &149557806157915136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,11 +70,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1583029677780091498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b97f01ce73a7658408c2f1739f74a5e9, type: 3}
+  m_Script: {fileID: 11500000, guid: bafcf8918de620b41a58d800228db624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _coinsRoad: {fileID: 4869447454542851878}
-  _coinsRoadSpawnPosition: {fileID: 0}
 --- !u!1001 &794619990684911091
 PrefabInstance:
   m_ObjectHideFlags: 0

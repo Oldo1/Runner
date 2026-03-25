@@ -7,7 +7,7 @@ namespace Assets.Scripts.States.PlayerState
     {
         private readonly Player _player;
 
-        public RightStrafeState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+        public RightStrafeState(Player player, PlayerStateMachine stateMachine, IInputHandler inputHandler) : base(player, stateMachine, inputHandler)
         {
             _player = player;
         }
@@ -16,6 +16,12 @@ namespace Assets.Scripts.States.PlayerState
         {
             Debug.Log("Right strafe");
             _player.StrafeRight();
+            base.OnEnter();
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
         }
     }
 }

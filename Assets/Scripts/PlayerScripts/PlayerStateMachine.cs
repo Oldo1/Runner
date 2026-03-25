@@ -5,24 +5,23 @@ using System.Collections.Generic;
 
 namespace Assets.Scripts.PlayerScripts
 {
-    public class PlayerStateMachine : StateMachine<PlayerBaseState>, IService
+    public class PlayerStateMachine : StateMachine<PlayerBaseState>
     {
         public Type CurrentStateType => currentState.GetType();
 
-        public void Init(Player player)
+        public void Init(Player player, IInputHandler inputHandler, IDisable disableInputHandler, PlayerAnimationController playerAnimationController)
         {
             states = new Dictionary<Type, PlayerBaseState>()
             {
-                { typeof(MoveState), new MoveState(player, this) },
-                { typeof(LeftStrafeState), new LeftStrafeState(player, this) },
-                { typeof(RightStrafeState), new RightStrafeState(player, this) },
-                { typeof(JumpState), new JumpState(player, this) },
-                { typeof(FallState), new FallState(player, this) },
-                { typeof(DeadState), new DeadState(this) }
+                { typeof(MoveState), new MoveState(player, this, inputHandler) },
+                { typeof(LeftStrafeState), new LeftStrafeState(player, this, inputHandler) },
+                { typeof(RightStrafeState), new RightStrafeState(player, this, inputHandler) },
+                { typeof(JumpState), new JumpState(player, this, inputHandler, playerAnimationController) },
+                { typeof(FallState), new FallState(player, this, inputHandler) },
+                { typeof(DeadState), new DeadState(this, disableInputHandler) }
             };
             GameEvents.OnDie += SwitchState<DeadState>;
             SwitchState<MoveState>();
-            ServiceLocator.Register(this);
         }
 
         private void OnDestroy()

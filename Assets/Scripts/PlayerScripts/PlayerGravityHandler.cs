@@ -8,17 +8,21 @@ namespace Assets.Scripts
     public class PlayerGravityHandler
     {
         private readonly float _gravity;
-        private readonly PlayerMover _mover;
         public bool IsGravityHandling { get; private set; }
 
-        public PlayerGravityHandler(PlayerMover mover, float gravity)
+        private readonly PlayerMover _mover;
+        private readonly GameManager _gameManager;
+
+        public PlayerGravityHandler(PlayerMover mover, float gravity, GameManager gameManager)
         {
             _gravity = gravity;
             _mover = mover;
+            _gameManager = gameManager;
         }
 
         public async UniTask HandleGravity(CancellationToken token)
         {
+            token.ThrowIfCancellationRequested();
             if (IsGravityHandling)
             {
                 Debug.LogWarning("Gravity already handling");
@@ -30,8 +34,8 @@ namespace Assets.Scripts
                 while (!_mover.IsOnGround)
                 {
                     token.ThrowIfCancellationRequested();
-                    if (GameManager.Instance.IsPaused)
-                        await UniTask.WaitUntil(() => !GameManager.Instance.IsPaused);
+                    if (_gameManager.IsPaused)
+                        await UniTask.WaitUntil(() => !_gameManager .IsPaused);
                     _mover.Velocity -= _gravity * Time.deltaTime * Vector3.up;
                     await UniTask.NextFrame(token);
                 }

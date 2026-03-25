@@ -1,20 +1,20 @@
 ﻿using Assets.Scripts;
+using System;
 using UnityEngine;
 
 namespace Assets
 {
-    public class PlayerAnimationController : IService
+    public class PlayerAnimationController : IDisposable
     {
         private readonly Animator _animator;
-        public static PlayerAnimationController Instance { get; private set; }
 
         public PlayerAnimationController(Animator animator)
         {
-            if (Instance == null || Instance != this)
-                Instance = this;
             _animator = animator;
             _animator.speed = 0;
-            ServiceLocator.Register(this);
+            GameEvents.OnPause += Pause;
+            GameEvents.OnResume += Play;
+            GameEvents.OnStartGame += Play;
         }
 
         public void Play()
@@ -30,6 +30,13 @@ namespace Assets
         public void SetIsJumpingParameter(bool value)
         {
             _animator.SetBool("IsJumping", value);
+        }
+
+        public void Dispose()
+        {
+            GameEvents.OnPause -= Pause;
+            GameEvents.OnResume -= Play;
+            GameEvents.OnStartGame -= Play;
         }
     }
 }
