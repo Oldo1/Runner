@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d38c9922db065484e912076a9e8f5723, type: 3}
-  m_Name: Player Jump data
+  m_Script: {fileID: 11500000, guid: 39ece1ff1bffe92419c01df13c54c6f7, type: 3}
+  m_Name: Strafe
   m_EditorClassIdentifier: 
-  _jumpHeight: 1.5
-  _jumpTime: 0.65
+  _maxStrafeForceX: 30
+  _maxStrafeForceY: 30

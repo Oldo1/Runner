@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Configs
 {
-    [CreateAssetMenu(fileName = "Jump data", menuName = "Data files")]
-    public class JumpData : ScriptableObject
+    [CreateAssetMenu(fileName = "Jump config", menuName = "Config files")]
+    public class JumpConfig : ScriptableObject
     {
         [SerializeField] private float _jumpHeight;
         [SerializeField] private float _jumpTime;

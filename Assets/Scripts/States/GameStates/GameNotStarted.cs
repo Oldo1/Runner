@@ -25,7 +25,7 @@ namespace Assets.Scripts.States.GameStates
 
         public override void OnEnter()
         {
-            _scaleLoopAnimation.Play(new Vector3(1.15f, 1.15f, 0f), 0.5f);
+            _scaleLoopAnimation.Play();
             _tapUIInputHandler.Enable();
             _coinsRotator.enabled = false;
             _playerMover.enabled = false;

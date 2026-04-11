@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Configs;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.PlayerScripts
@@ -9,17 +10,21 @@ namespace Assets.Scripts.PlayerScripts
         private bool _strafePerformed;
         private bool _jumpPerformed;
         private readonly PlayerInput _playerInput;
+        private readonly StrafeConfig _strafeConfig;
         public event Action<Vector2> OnStrafePerformed;
         public event Action OnJumpPerformed;
 
-        public GameplayInputHandler(PlayerInput input)
+        public GameplayInputHandler(PlayerInput input, StrafeConfig strafeConfig)
         {
             if (input == null)
                 throw new ArgumentNullException("input is null");
             _playerInput = input;
+            _strafeConfig = strafeConfig;
             Enable();
             _playerInput.Gameplay.Swipe.performed += SwipePerformed;
             _playerInput.Gameplay.Touch.started += OnTouchCanceled;
+            GameEvents.OnPause += Disable;
+            GameEvents.OnResume += Enable;
         }
 
         private void OnTouchCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)
@@ -34,7 +39,7 @@ namespace Assets.Scripts.PlayerScripts
             if (!_strafePerformed)
             {
                 var strafeValue = context.ReadValue<Vector2>();
-                if (Mathf.Abs(strafeValue.x) >= 60)
+                if (Mathf.Abs(strafeValue.x) >= _strafeConfig.MaxStrafeForceX)
                 {
                     _strafePerformed = true;
                     var strafeDirection = Vector2.right * Mathf.Sign(strafeValue.x);
@@ -45,7 +50,7 @@ namespace Assets.Scripts.PlayerScripts
             if (!_jumpPerformed)
             {
                 var swipeDirection = context.ReadValue<Vector2>();
-                if (swipeDirection.y >= 60)
+                if (swipeDirection.y >= _strafeConfig.MaxStrafeForceY)
                 {
                     _jumpPerformed = true;
                     OnJumpPerformed?.Invoke();
@@ -57,6 +62,8 @@ namespace Assets.Scripts.PlayerScripts
         {
             _playerInput.Gameplay.Swipe.performed -= SwipePerformed;
             _playerInput.Gameplay.Touch.started -= OnTouchCanceled;
+            GameEvents.OnPause -= Disable;
+            GameEvents.OnResume -= Enable;
             _playerInput.Gameplay.Disable();
         }
 

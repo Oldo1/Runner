@@ -13,9 +13,9 @@ namespace Assets.Scripts
             _transform = transform;
         }
 
-        public void Play(Vector3 endValue, float duration)
+        public void Play()
         {
-            _transform.DOScale(endValue, duration).SetLoops(-1, LoopType.Yoyo);
+            _transform.DOScale(new Vector3(1.15f, 1.15f, 0), 0.5f).SetLoops(-1, LoopType.Yoyo);
         }
 
         public void Kill()

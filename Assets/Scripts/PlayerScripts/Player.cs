@@ -1,6 +1,5 @@
-﻿using Assets.Scripts.PlayerScripts;
+﻿using Assets.Scripts.Configs;
 using Cysharp.Threading.Tasks;
-using System;
 using System.Threading;
 using UnityEngine;
 
@@ -9,9 +8,9 @@ namespace Assets.Scripts
     public class Player : MonoBehaviour
     {
         [SerializeField] private float _strafeSpeed;
-        [SerializeField] private JumpData _jumpData;
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private PlayerMover _playerMover;
+        [SerializeField] private JumpConfig _jumpConfig;
 
         private PlayerStrafeController _strafeController;
         private CancellationTokenSource _cancelationToken; 
@@ -24,12 +23,11 @@ namespace Assets.Scripts
         public int RightLineNumber => _strafeController.RightLineNumber;
         public int CurrentLineNumber => _strafeController.CurrentLineNumber;
 
-        public void Init(PlayerStrafeController strafeController, PlayerGravityHandler gravityHandler)
+        public void Init(PlayerStrafeController strafeController, PlayerGravityHandler gravityHandler, JumpConfig jumpConfig)
         {
             _strafeController = strafeController;
             _gravityHandler = gravityHandler;
-            /*_playerMover.enabled = false;
-            _stateMachine.enabled = false;*/
+            _jumpConfig = jumpConfig;
         }
 
         public void Die()
@@ -51,7 +49,7 @@ namespace Assets.Scripts
 
         public void Jump()
         {
-            _playerMover.Velocity = Vector3.up * _jumpData.InitialVelocity;
+            _playerMover.Velocity = Vector3.up * _jumpConfig.InitialVelocity;
         }
 
         public void Fall()
