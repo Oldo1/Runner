@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Configs
 {
-    [CreateAssetMenu(fileName = "Jump config", menuName = "Config files")]
+    [CreateAssetMenu(fileName = "Jump config", menuName = "Jump files")]
     public class JumpConfig : ScriptableObject
     {
         [SerializeField] private float _jumpHeight;

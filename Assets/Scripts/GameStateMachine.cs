@@ -8,7 +8,7 @@ namespace Assets.Scripts
     public class GameStateMachine : StateMachine<GameBaseState>
     {
         public void Init(GameManager game, GameOverAnimation gameOverAnimation, ScaleLoopAnimation scaleLoopAnimation, UIInputHandler uiInputHandler, 
-            GameplayInputHandler gameplayInputHandler, PlayerMover playerMover, PlayerStateMachine playerStateMachine, SegmentsSpawnerAsync segmentsSpawnerAsync,
+            GameplayInputHandler gameplayInputHandler, PlayerMover playerMover, PlayerStateMachine playerStateMachine, ISegmentSpawnerAsync segmentsSpawnerAsync,
             CoinsRotator coinsRotator, PlayerAnimationController playerAnimationController, SegmentsMover segmentsMover)
         {
             states = new Dictionary<Type, GameBaseState>()

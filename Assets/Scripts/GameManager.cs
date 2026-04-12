@@ -12,7 +12,7 @@ namespace Assets.Scripts
         public bool IsPaused { get; private set; }
 
         public void Init(GameOverAnimation gameOverAnimation, ScaleLoopAnimation scaleLoopAnimation, UIInputHandler uiInputHandler, GameplayInputHandler gameplayInputHandler,
-            PlayerMover playerMover, PlayerStateMachine playerStateMachine, SegmentsSpawnerAsync segmentsSpawnerAsync, CoinsRotator coinsRotator, 
+            PlayerMover playerMover, PlayerStateMachine playerStateMachine, ISegmentSpawnerAsync segmentsSpawnerAsync, CoinsRotator coinsRotator, 
             PlayerAnimationController playerAnimationController, SegmentsMover segmentsMover)
         {
             GameEvents.OnCollectCoin += IncreaseCoinNumber;

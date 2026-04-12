@@ -10,6 +10,7 @@ namespace Assets.Scripts
         private readonly GameObject _prefab;
         private Transform _parent;
         public GameObject Prefab => _prefab;
+        public int CountActive => _objectPool.CountActive;
 
         public GameObjectPool(GameObject prefab, int initialCapacity, int maxSize)
         {

@@ -36,8 +36,7 @@ namespace Assets.Scripts.States.PlayerState
 
         public override void Update()
         {
-            if (_player.IsGravityHandling) return;
-
+            var currentState = stateMachine.CurrentStateType;
             if (!_player.IsStrafing && _player.IsOnGround)
             {
                 if (_strafeDirection != Vector2.zero)
@@ -49,10 +48,10 @@ namespace Assets.Scripts.States.PlayerState
                 }
                 else if (_jumpPerformed)
                     stateMachine.SwitchState<JumpState>();
-                else if (stateMachine.CurrentStateType != typeof(MoveState))
+                else if (currentState != typeof(MoveState))
                     stateMachine.SwitchState<MoveState>();
             }
-            else if (!_player.IsOnGround && stateMachine.CurrentStateType != typeof(JumpState))
+            else if (!_player.IsOnGround && currentState != typeof(JumpState) && currentState != typeof(FallState))
                 stateMachine.SwitchState<FallState>();
         }
 

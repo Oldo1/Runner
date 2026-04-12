@@ -8,10 +8,10 @@ namespace Assets.Scripts.States.GameStates
         private readonly UIInputHandler _uiInputHandler;
         private readonly PlayerMover _playerMover;
         private readonly PlayerStateMachine _playerStateMachine;
-        private readonly SegmentsSpawnerAsync _segmentsSpawnerAsync;
+        private readonly ISegmentSpawnerAsync _segmentsSpawnerAsync;
 
         public GameStarted(GameManager game, GameStateMachine stateMachine, GameplayInputHandler gameplayerInputHandler, UIInputHandler uiInputHandler,
-            PlayerMover playerMover, PlayerStateMachine playerStateMachine, SegmentsSpawnerAsync segmentsSpawnerAsync) : base(game, stateMachine)
+            PlayerMover playerMover, PlayerStateMachine playerStateMachine, ISegmentSpawnerAsync segmentsSpawnerAsync) : base(game, stateMachine)
         {
             _uiInputHandler = uiInputHandler;
             _playerMover = playerMover;

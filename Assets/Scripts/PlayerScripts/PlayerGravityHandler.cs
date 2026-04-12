@@ -22,7 +22,6 @@ namespace Assets.Scripts
 
         public async UniTask HandleGravity(CancellationToken token)
         {
-            token.ThrowIfCancellationRequested();
             if (IsGravityHandling)
             {
                 Debug.LogWarning("Gravity already handling");

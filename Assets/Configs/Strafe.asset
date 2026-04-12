@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ece1ff1bffe92419c01df13c54c6f7, type: 3}
   m_Name: Strafe
   m_EditorClassIdentifier: 
-  _maxStrafeForceX: 30
-  _maxStrafeForceY: 30
+  _maxStrafeForceX: 50
+  _maxStrafeForceY: 50

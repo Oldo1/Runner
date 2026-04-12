@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -8,6 +9,16 @@ namespace Assets.Scripts
     {
         private readonly static Dictionary<GameObject, GameObjectPool> _gameObjectPools = new();
         private readonly static Dictionary<GameObject, GameObject> _spawnedGameObjectsMap = new();
+
+        public static int GetActiveCount()
+        {
+            var result = 0;
+            foreach (var activeCount in _gameObjectPools.Values.Select(x => x.CountActive))
+            {
+                result += activeCount;
+            }
+            return result;
+        }
 
         public static void AddGameObjectPool(GameObjectPool objectPool)
         {

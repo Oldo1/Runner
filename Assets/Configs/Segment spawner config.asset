@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 548d7e1c22bd3bd4b97d5639df722f9a, type: 3}
   m_Name: Segment spawner config
   m_EditorClassIdentifier: 
-  _segmentSpawnRate: 1.75
+  _segmentSpawnRate: 2.2
   _zOffset: 10

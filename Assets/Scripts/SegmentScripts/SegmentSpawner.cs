@@ -6,8 +6,9 @@ namespace Assets.Scripts
     public class SegmentSpawner
     {
         private readonly GameObject[] _segmentsPrefab;
-        private static Transform _lastCreatedSegmentTransform;
         private readonly float _zOffset;
+        private readonly int _maxSegmentsCount;
+        private static Transform _lastCreatedSegmentTransform;
 
         public SegmentSpawner(GameObject[] segmentPrefab, float zOffset)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class SegmentsSpawnerAsync : SegmentSpawner
+    public class SegmentsSpawnerWithSpawnRate : SegmentSpawner, ISegmentSpawnerAsync
     {
         private CancellationTokenSource _cancellationTokenSource;
         private bool _isSpawning;
@@ -12,7 +12,7 @@ namespace Assets.Scripts
         private readonly float _spawnRate;
         private readonly GameManager _gameManager;
 
-        public SegmentsSpawnerAsync(GameObject[] segmentsPrefabs, float zOffset, float spawnRate, GameManager gameManager) : base(segmentsPrefabs, zOffset)
+        public SegmentsSpawnerWithSpawnRate(GameObject[] segmentsPrefabs, float zOffset, float spawnRate, GameManager gameManager) : base(segmentsPrefabs, zOffset)
         {
             _spawnRate = spawnRate;
             _gameManager = gameManager;
@@ -42,8 +42,8 @@ namespace Assets.Scripts
                 while (true)
                 {
                     token.ThrowIfCancellationRequested();
-                    if (_gameManager)
-                        await UniTask.WaitUntil(() => !_gameManager.IsPaused);
+                    if (_gameManager.IsPaused)
+                        await UniTask.WaitUntil(() => !_gameManager.IsPaused, cancellationToken: token);
                     Spawn();
                     await UniTask.WaitForSeconds(_spawnRate, cancellationToken: token);
                 }

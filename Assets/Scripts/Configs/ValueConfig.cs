@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Configs
 {
-    [CreateAssetMenu(fileName = "Value config", menuName = "Config files")]
+    [CreateAssetMenu(fileName = "Value config", menuName = "Value config")]
     public class ValueConfig : ScriptableObject
     {
         [SerializeField] private int _value;

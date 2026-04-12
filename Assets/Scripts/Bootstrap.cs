@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using Assets.Scripts.SegmentScripts;
 
 public class Bootstrap : MonoBehaviour
 {
@@ -31,8 +32,10 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private StrafeConfig _strafeConfig;
     [SerializeField] private ValueConfig _strafeSpeed;
     [SerializeField] private ValueConfig _initialSegmentCount;
+    [SerializeField] private ValueConfig _maxSegmentsCount;
     [SerializeField] private SegmentSpawnerConfig _segmentSpawnerConfig;
     [SerializeField] private ObjectPoolConfig _objectPoolConfig;
+    [SerializeField] private GameConfig _gameConfig;
 
     [Header("Other")]
     [SerializeField] private CameraFollow _cameraFollow;
@@ -47,13 +50,16 @@ public class Bootstrap : MonoBehaviour
 
     private void Awake()
     {
+        QualitySettings.vSyncCount = _gameConfig.VSyncCount;
+        Application.targetFrameRate = _gameConfig.TargetFrameRate; 
+
         _disposables = new List<IDisposable>();
         SegmentSpawner.FindLastCreatedSegmentTransform();
         _coinsRotator.Init();
 
         _soundManager.Init();
 
-        var segmentSpawnerAsync = new SegmentsSpawnerAsync(_segmentsPrefabs, _segmentSpawnerConfig.ZOffset, _segmentSpawnerConfig.SegmentSpawnRate, _gameManager);
+        var segmentSpawnerAsync = new SegmentSpawnerWithMaxCount(_segmentsPrefabs, _segmentSpawnerConfig.ZOffset, _maxSegmentsCount.Value, _gameManager);
         var segmentSpawner = new SegmentsSpawner(_segmentsPrefabs, _segmentSpawnerConfig.ZOffset);
         AddGameObjectPools(_segmentsPrefabs);
         segmentSpawner.Spawn(_initialSegmentCount.Value);

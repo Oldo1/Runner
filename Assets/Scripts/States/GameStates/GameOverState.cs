@@ -6,13 +6,13 @@ namespace Assets.Scripts.States.GameStates
     public class GameOverState : GameBaseState
     {
         private readonly GameOverAnimation _gameOverAnimation;
-        private readonly SegmentsSpawnerAsync _segmentsSpawner;
+        private readonly ISegmentSpawnerAsync _segmentsSpawner;
         private readonly CoinsRotator _coinsRotator;
         private readonly PlayerAnimationController _playerAnimationController;
         private readonly SegmentsMover _segmentsMover;
         private readonly UIInputHandler _inputHandler;
 
-        public GameOverState(GameOverAnimation gameOverAnimation, GameManager game, GameStateMachine stateMachine, SegmentsSpawnerAsync segmentsSpawnerAsync,
+        public GameOverState(GameOverAnimation gameOverAnimation, GameManager game, GameStateMachine stateMachine, ISegmentSpawnerAsync segmentsSpawnerAsync,
             CoinsRotator coinsRotator, PlayerAnimationController playerAnimationController, SegmentsMover segmentsMover, UIInputHandler uiInputHandler) : base(game, stateMachine)
         {
             _gameOverAnimation = gameOverAnimation;

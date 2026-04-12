@@ -6,11 +6,11 @@ namespace Assets.Scripts.PlayerScripts
 {
     public class GameplayInputHandler: IDisposable, IInputHandler, IDisable
     {
+        private bool _isSwiping;
 
-        private bool _strafePerformed;
-        private bool _jumpPerformed;
         private readonly PlayerInput _playerInput;
         private readonly StrafeConfig _strafeConfig;
+
         public event Action<Vector2> OnStrafePerformed;
         public event Action OnJumpPerformed;
 
@@ -30,31 +30,26 @@ namespace Assets.Scripts.PlayerScripts
         private void OnTouchCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
             Debug.Log("touch canceled");
-            _strafePerformed = false;
-            _jumpPerformed = false;
+            _isSwiping = false;
         }
 
         private void SwipePerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
-            if (!_strafePerformed)
+            if (_isSwiping == true) return;
+
+            var swipeDirection = context.ReadValue<Vector2>();
+
+            if (Mathf.Abs(swipeDirection.x) >= _strafeConfig.MaxStrafeForceX)
             {
-                var strafeValue = context.ReadValue<Vector2>();
-                if (Mathf.Abs(strafeValue.x) >= _strafeConfig.MaxStrafeForceX)
-                {
-                    _strafePerformed = true;
-                    var strafeDirection = Vector2.right * Mathf.Sign(strafeValue.x);
-                    OnStrafePerformed?.Invoke(strafeDirection);
-                }
+                _isSwiping = true;
+                var strafeDirection = Vector2.right * Mathf.Sign(swipeDirection.x);
+                OnStrafePerformed?.Invoke(strafeDirection);
             }
 
-            if (!_jumpPerformed)
+            else if (swipeDirection.y >= _strafeConfig.MaxStrafeForceY)
             {
-                var swipeDirection = context.ReadValue<Vector2>();
-                if (swipeDirection.y >= _strafeConfig.MaxStrafeForceY)
-                {
-                    _jumpPerformed = true;
-                    OnJumpPerformed?.Invoke();
-                }
+                _isSwiping = true;
+                OnJumpPerformed?.Invoke();
             }
         }
 

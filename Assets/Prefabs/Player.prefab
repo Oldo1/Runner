@@ -56,13 +56,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 0.74
+  m_Height: 0.72
   m_Radius: 0.15
   m_SlopeLimit: 45
   m_StepOffset: 0
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0.37, z: -0.01}
+  m_Center: {x: 0, y: 0.34, z: 0}
 --- !u!114 &-5909971739547135178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,11 +76,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _strafeSpeed: 10
-  _playerMover: {fileID: 1472709156355351332}
-  _jumpData: {fileID: 11400000, guid: b7183ad88665709499b66c66885afae0, type: 2}
   _characterController: {fileID: 1002305225182513837}
-  _stateMachine: {fileID: -8194460339510051820}
-  _playerAnimator: {fileID: 2644880611100998555}
+  _playerMover: {fileID: 1472709156355351332}
+  _jumpConfig: {fileID: 0}
 --- !u!114 &1472709156355351332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,11 +199,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4995c54e1a997347b40c2a417baa412, type: 3}
---- !u!95 &2644880611100998555 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: -8332114776235336066, guid: f4995c54e1a997347b40c2a417baa412, type: 3}
-  m_PrefabInstance: {fileID: 2948416462467605989}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6116233613323380031 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8938478911935348954, guid: f4995c54e1a997347b40c2a417baa412, type: 3}
